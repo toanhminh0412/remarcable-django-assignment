@@ -47,3 +47,10 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return repr(self)
+
+    def render_tags(self) -> str:
+        """
+        Return tags as comma-separated list string
+        Used in HTML and print statements
+        """
+        return ', '.join(self.tag.values_list('name', flat=True))
