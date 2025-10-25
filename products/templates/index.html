@@ -15,7 +15,33 @@
 
   <body>
 
-    <h1>Product page</h1>
+    <main>
+      <h1>Products</h1>
 
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+            <th scope="col">Description</th>
+            <th scope="col">Tags</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+            <tr>
+              <th>{{ product.id }}</th>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.category }}</td>
+              <td>{{ product.description }}</td>
+              <td>{{ product.render_tags }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </main>
   </body>
 </html>
