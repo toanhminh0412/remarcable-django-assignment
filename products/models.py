@@ -9,6 +9,12 @@ class Category(models.Model):
     """
     name = models.CharField(max_length=200, null=False, blank=False)
 
+    def __repr__(self) -> str:
+        return str(self.name)
+
+    def __str__(self) -> str:
+        return repr(self)
+
 class Tag(models.Model):
     """
     Product tags
@@ -16,6 +22,12 @@ class Tag(models.Model):
     can belong to multiple products
     """
     name = models.CharField(max_length=200, null=False, blank=False)
+
+    def __repr__(self) -> str:
+        return str(self.name)
+
+    def __str__(self) -> str:
+        return repr(self)
 
 class Product(models.Model):
     """
@@ -29,3 +41,9 @@ class Product(models.Model):
     description = models.TextField(null=False, blank=False)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tag = models.ManyToManyField(Tag)
+
+    def __repr__(self) -> str:
+        return str(self.name)
+
+    def __str__(self) -> str:
+        return repr(self)
