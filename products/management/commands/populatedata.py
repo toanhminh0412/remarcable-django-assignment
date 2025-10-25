@@ -55,5 +55,5 @@ class Command(BaseCommand):
                 f"- Price: {new_product.price}\n"
                 f"- Description: {new_product.description}\n"
                 f"- Category: {new_product.category.name}\n"
-                f"- Tags: {', '.join(new_product.tag.values_list('name', flat=True))}\n"
+                f"- Tags: {new_product.render_tags()}\n"
             )
