@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.db.models import Count, Q
 from .models import Category, Tag, Product
 
 class IndexView(TemplateView):
@@ -9,7 +10,51 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = (
-            Product.objects.all().prefetch_related('tag').select_related('category')
-        )
+        description = self.request.GET.get('description', '')
+
+        # Handle case when category is not a number
+        category = 0
+        try:
+            category = int(self.request.GET.get('category', 0))
+        except ValueError:
+            category = 0
+
+        # Handle case when a tag is not a number
+        tags = self.request.GET.getlist('tags', [])
+        processed_tags = []
+        for tag in tags:
+            try:
+                processed_tags.append(int(tag))
+            except ValueError:
+                continue
+        tags = processed_tags
+
+        # Initial query
+        # Using prefetch_related and select_related to avoid extra database queries on
+        # when accessing tag and category's fields later on
+        query = Product.objects.prefetch_related('tag').select_related('category')
+
+        # Filters applied
+        if description or category or tags:
+            if description:
+                query = query.filter(description__icontains=description)
+            if category:
+                query = query.filter(category__id=category)
+
+            # Assuming getting all products that have all searched tags
+            if tags:
+                query = (
+                    query.filter(tag__id__in=tags)
+                    .annotate(num_tags=Count("tag", filter=Q(tag__id__in=tags), distinct=True))
+                    .filter(num_tags=len(tags))
+                )
+
+        # Context variables used for template
+        context["products"] = query
+        context["categories"] = Category.objects.all()
+        context["tags"] = Tag.objects.all()
+
+        context["searched_description"] = description
+        context["searched_category"] = category
+        context["searched_tags"] = tags
         return context

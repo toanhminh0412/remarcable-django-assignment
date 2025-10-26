@@ -11,37 +11,106 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/js/all.min.js" integrity="sha512-6BTOlkauINO65nLhXhthZMtepgJSghyimIalb+crKRPhvhmsCdnIuGcVbR5/aQY2A+260iC1OPy1oCdB6pSSwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    {% comment %}
+    I'm aware that inline-styling is not ideal. However, since frontend is important for this assignment,
+    I will use inline-styling to streamline development.
+    {% endcomment %}
+    <style>
+      aside {
+        width: 20rem;
+        max-height: 100vh;
+      }
+
+      #data-display {
+        margin-left: 20rem;
+      }
+
+      select[name="tags"] {
+        height: 14rem;
+      } 
+    </style>
   </head>
 
   <body>
+    <main class="d-flex flex-row">
+      <aside class="shadow p-3 border-end position-fixed top-0 bottom-0">
+        <h2>Filters</h2>
 
-    <main>
-      <h1>Products</h1>
+        <form>
+          <div class="my-3">
+            <label for="description" class="form-label">Search by description</label>
+            <input
+              type="text"
+              name="description"
+              class="form-control"
+              id="description"
+              placeholder="e.g. muffin"
+              {% if searched_description %}value="{{ searched_description }}"{% endif %}  
+            >
+          </div>
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Category</th>
-            <th scope="col">Description</th>
-            <th scope="col">Tags</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for product in products %}
+          <div class="my-3">
+            <label for="category" class="form-label">Select by category</label>
+            <select class="form-select" name="category" aria-label="Select by category">
+              <option value="0" selected>All</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == searched_category %}selected{% endif %}>{{ category }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="my-3">
+            <label for="tags" class="form-label">Select by tags</label>
+            <select class="form-select" name="tags" aria-label="Select by tags" multiple>
+              {% for tag in tags %}
+                <option value="{{ tag.id }}" {% if tag.id in searched_tags %}selected{% endif %}>{{ tag }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="d-flex flex-row align-items-center justify-content-end gap-2 mt-3">
+            <a href="{% url 'index' %}" class="btn btn-secondary">
+              Reset
+              <i class="fa-solid fa-rotate-left ms-1"></i>
+            </a>
+            <button type="submit" class="btn btn-primary">
+              Apply
+              <i class="fa-solid fa-arrow-right ms-1"></i>
+            </button>
+          </div>
+
+        </form>
+      </aside>
+
+      <div id="data-display" class="p-3">
+        <h1>Products</h1>
+
+        <table class="table table-striped" style="width: 100%;">
+          <thead>
             <tr>
-              <th>{{ product.id }}</th>
-              <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
-              <td>{{ product.category }}</td>
-              <td>{{ product.description }}</td>
-              <td>{{ product.render_tags }}</td>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Price</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Tags</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <th>{{ product.id }}</th>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.render_tags }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </main>
   </body>
 </html>
