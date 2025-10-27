@@ -13,6 +13,8 @@ class IndexView(TemplateView):
         description = self.request.GET.get('description', '')
 
         # Handle case when category is not a number
+        # category is an id instead of name because the database
+        # automatically index primary keys -> faster search runtime
         category = 0
         try:
             category = int(self.request.GET.get('category', 0))
@@ -20,6 +22,8 @@ class IndexView(TemplateView):
             category = 0
 
         # Handle case when a tag is not a number
+        # tags are ids instead of names because the database
+        # automatically index primary keys -> faster search runtime
         tags = self.request.GET.getlist('tags', [])
         processed_tags = []
         for tag in tags:
