@@ -14,8 +14,12 @@ pip install -r requirements.txt
 
 Start a PostgreSQL database (read the **Assumptions** section for why):
 ```
-docker run --name mystore-postgres -e POSTGRES_DB=mystore -e POSTGRES_USER=mystore -e 
-POSTGRES_PASSWORD=supersecretpassword -p 5432:5432 -d postgres
+docker run --name mystore-postgres \
+    -e POSTGRES_DB=mystore \
+    -e POSTGRES_USER=mystore \
+    -e POSTGRES_PASSWORD=supersecretpassword \
+    -p 5432:5432 \
+    -d postgres
 ```
 
 Create necessary environment variables. Create `mystore/.env`:
