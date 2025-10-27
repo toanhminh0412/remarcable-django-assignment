@@ -12,11 +12,22 @@ pythom3 -m venv venv
 pip install -r requirements.txt
 ```
 
+Start a PostgreSQL database (read the **Assumptions** section for why):
+```
+docker run --name mystore-postgres -e POSTGRES_DB=mystore -e POSTGRES_USER=mystore -e 
+POSTGRES_PASSWORD=supersecretpassword -p 5432:5432 -d postgres
+```
+
 Create necessary environment variables. Create `mystore/.env`:
 ```
 SECRET_KEY=supersecretkey       # Please change this to something secure. You can genereate one by running 'python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"'
 DEBUG=true
 ALLOWED_HOSTS=localhost,127.0.0.1
+
+POSTGRES_HOST=localhost
+POSTGRES_DB=mystore
+POSTGRES_USER=mystore
+POSTGRES_PASSWORD=supersecretpassword
 ```
 
 Perform a database migration:
