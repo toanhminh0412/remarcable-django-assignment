@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.search import SearchVectorField
 
 # NOTES:
 # - null=False, blank=False are by default but I want to be specific
@@ -39,6 +40,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200, null=False, blank=False)
     price = models.FloatField(null=False, blank=False)
     description = models.TextField(null=False, blank=False)
+    description_tsv = SearchVectorField(null=True, editable=False, db_column="description_tsv")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     tag = models.ManyToManyField(Tag)
 
