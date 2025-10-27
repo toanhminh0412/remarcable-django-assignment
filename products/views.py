@@ -43,6 +43,8 @@ class IndexView(TemplateView):
 
             # Assuming getting all products that have all searched tags
             if tags:
+                # Using .annotate to run the queries within the database instead of Python
+                # for better resource usage and faster code execution
                 query = (
                     query.filter(tag__id__in=tags)
                     .annotate(num_tags=Count("tag", filter=Q(tag__id__in=tags), distinct=True))
