@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView
 from django.db.models import Count, Q
+from django.db.models.expressions import RawSQL
+from django.contrib.postgres.search import SearchQuery
 from .models import Category, Tag, Product
 
 class IndexView(TemplateView):
@@ -41,7 +43,11 @@ class IndexView(TemplateView):
         # Filters applied
         if description or category or tags:
             if description:
-                query = query.filter(description__icontains=description)
+                query = query.filter(
+                    description_tsv=SearchQuery(
+                        f"{description}:*", search_type="raw", config="english"
+                    )
+                )
             if category:
                 query = query.filter(category__id=category)
 
