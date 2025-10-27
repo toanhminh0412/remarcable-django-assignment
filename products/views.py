@@ -1,3 +1,4 @@
+import time
 from django.views.generic import TemplateView
 from django.db.models import Count, Q
 from django.db.models.expressions import RawSQL
@@ -35,6 +36,9 @@ class IndexView(TemplateView):
                 continue
         tags = processed_tags
 
+        # Start time counter
+        start = time.perf_counter()
+
         # Initial query
         # Using prefetch_related and select_related to avoid extra database queries on
         # when accessing tag and category's fields later on
@@ -61,6 +65,9 @@ class IndexView(TemplateView):
                     .filter(num_tags=len(tags))
                 )
 
+        # End time counter
+        end = time.perf_counter()
+
         # Context variables used for template
         context["products"] = query
         context["categories"] = Category.objects.all()
@@ -69,4 +76,6 @@ class IndexView(TemplateView):
         context["searched_description"] = description
         context["searched_category"] = category
         context["searched_tags"] = tags
+
+        context["query_execution_time"] = end - start
         return context
