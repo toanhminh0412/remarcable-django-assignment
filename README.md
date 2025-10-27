@@ -24,6 +24,11 @@ Perform a database migration:
 python3 manage.py migrate
 ```
 
+**(Optional)** Generate data for the app. If you want to use the Django's admin dashboard to manually create data, feel free to skip this step. Use the `populatedata` management command to generate test data (You can modify `data/products.json` to make changes to the data):
+```
+python3 manage.py populatedata
+```
+
 Run Django's development server on port 8000:
 ```
 python3 manage.py runserver
