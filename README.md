@@ -64,7 +64,7 @@ Visit the app on `http://127.0.0.1:<port>`.
 This section explains how I implemented the search and filter functionalities.
 
 **1. Description**
-- Use `models.TextField` to store description due to the uncertain of length. Therefore, we'd have to support full-text search for the description field.
+- Use `models.TextField` to store description due to the uncertainty of length. Therefore, we'd have to support full-text search for the description field.
 - Use GIN index for description search as it's efficient for full-text search.
 - Implementation for GIN index is briefly described as follows: create a tsvector field `description_tsv` that is auto-generated on description saves, create a GIN index for this field, implement searches using this field.
 
