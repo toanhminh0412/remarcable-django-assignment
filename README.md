@@ -7,7 +7,7 @@ cd mystore
 
 From now on, `mystore` will be our root directory. Install python packages into a virtual environment:
 ```
-pythom3 -m venv venv
+python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 ```
