@@ -83,11 +83,21 @@ WSGI_APPLICATION = 'mystore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if 'POSTGRES_HOST' in os.environ:
+    default_db = {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'mystore'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'testpassword'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost')
     }
+else:
+    default_db = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mystore.sqlite3'
+    }
+DATABASES = {
+    'default': default_db
 }
 
 
