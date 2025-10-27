@@ -22,9 +22,10 @@ docker run --name mystore-postgres \
     -d postgres
 ```
 
-Create necessary environment variables. Create `mystore/.env`:
+Create necessary environment variables in `mystore/.env`:
 ```
-SECRET_KEY=supersecretkey       # Please change this to something secure. You can genereate one by running 'python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"'
+cat > mystore/.env << 'EOF'
+SECRET_KEY=supersecretkey       # Please change this to something secure. You can generate one by running 'python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"'
 DEBUG=true
 ALLOWED_HOSTS=localhost,127.0.0.1
 
@@ -32,6 +33,7 @@ POSTGRES_HOST=localhost
 POSTGRES_DB=mystore
 POSTGRES_USER=mystore
 POSTGRES_PASSWORD=supersecretpassword
+EOF
 ```
 
 Perform a database migration:
